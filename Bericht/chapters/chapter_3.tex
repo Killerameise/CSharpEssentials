@@ -1,0 +1,41 @@
+%
+\section{Automatisches Aktualisieren von Ressourcen-Dateien für die Lokalisierung einer iOS-Applikation}
+
+\subsection{Erläuterung des Problems}
+
+Wie bereits unter Punkt 2.X.Y erläutert, erfordert die Lokalisation einer Applikation den Umgang mit statischen und dynamischen Texten.
+
+Im Verlaufe der Entwicklung eines Projekts werden oftmals Änderungen an den statischen Texten einer Applikation vorgenommen. Jedoch aktualisiert XCode diese Änderungen nicht selbstständig in den Ressourcendateien für die unterstützten Sprachen. Da es ineffizient ist diesen Prozess manuell auszuführen, bietet sich hierfür eine automatisierte Lösung an. Eine solche Lösung zu finden war Teil meiner Aufgabe im Bachelorprojekt.
+
+\subsection{Lösungansätze}
+
+Automatisch. Beim Builden. Voraussetzungen? Womit arbeite ich konkret? -> Format solcher Dateien erklären.
+
+\subsection{Vorstellung der implementierten Lösung}
+
+Bei der von mir implementierten Lösung handelt es sich um ein Skript (Glossar?), welches in der Programmiersprache Python geschrieben wurde.
+
+\subsubsection{Konzept}
+
+Schritt 1: ibtool --extract-strings-file
+Schritt : Datei indexieren
+
+Schritt : Suche nach Referenz Datei
+
+Schritt : if ref? : Referenzdatei indexieren
+
+Schritt : else : slim Mode init
+
+Schritt : Suche Neue Einträge
+
+Schritt : Suche veraltete Einträge
+
+Schritt : Neue Datei schreiben (für beide?)
+
+\subsubsection{Laufzeitanalyse}
+
+Oh Goooooott.....
+
+\subsection{Diskussion der implementierten Lösung}
+
+Vorteile, Drawbacks? Kodierungen können für Fehler sorgen.... Rechtschreibfehler sind auch Kacke
