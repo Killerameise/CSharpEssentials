@@ -229,3 +229,11 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+*.pdf
+*.aux
+*.blg
+*.pdf
+*.synctex.gz
+*.log
+*.DS_Store

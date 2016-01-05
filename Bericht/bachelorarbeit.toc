@@ -1,0 +1,24 @@
+\contentsline {section}{\numberline {1}Einleitung}{4}
+\contentsline {subsection}{\numberline {1.1}Aufbau der Arbeit}{4}
+\contentsline {subsection}{\numberline {1.2}Vorstellung der Aufgabenstellung}{4}
+\contentsline {subsubsection}{\numberline {1.2.1}Technische Voraussetzungen}{4}
+\contentsline {subsubsection}{\numberline {1.2.2}Erkl\IeC {\"a}rung des Begriffs Telemedizin}{4}
+\contentsline {subsubsection}{\numberline {1.2.3}Vorstellung der Firma GETEMED}{4}
+\contentsline {subsubsection}{\numberline {1.2.4}Vorstellung des L\IeC {\"o}sungsansatzes}{4}
+\contentsline {subsubsection}{\numberline {1.2.5}Arbeitsteilung innerhalb des Projekts}{4}
+\contentsline {section}{\numberline {2}Erstellung einer grafischen Oberfl\IeC {\"a}che f\IeC {\"u}r eine iOS-Applikation}{5}
+\contentsline {subsection}{\numberline {2.1}Kl\IeC {\"a}rung des Begriffs \glqq grafische Oberfl\IeC {\"a}che\grqq }{5}
+\contentsline {subsubsection}{\numberline {2.1.1}Das Model-View-Controller Pattern}{5}
+\contentsline {paragraph}{Models}{5}
+\contentsline {section}{\numberline {3}Automatisches Aktualisieren von Ressourcen-Dateien f\IeC {\"u}r die Lokalisierung einer iOS-Applikation}{6}
+\contentsline {subsection}{\numberline {3.1}Erl\IeC {\"a}uterung des Problems}{6}
+\contentsline {subsection}{\numberline {3.2}L\IeC {\"o}sungans\IeC {\"a}tze}{6}
+\contentsline {subsection}{\numberline {3.3}Vorstellung der implementierten L\IeC {\"o}sung}{6}
+\contentsline {subsubsection}{\numberline {3.3.1}Konzept}{6}
+\contentsline {subsubsection}{\numberline {3.3.2}Laufzeitanalyse}{6}
+\contentsline {subsection}{\numberline {3.4}Diskussion der implementierten L\IeC {\"o}sung}{6}
+\contentsline {section}{\numberline {4}Diskussion der erzielten Ergebnisse}{7}
+\contentsline {subsection}{\numberline {4.1}Darstellung der erzielten Ergebnisse}{7}
+\contentsline {subsection}{\numberline {4.2}Diskussion der erzielten Ergebnisse}{7}
+\contentsline {subsection}{\numberline {4.3}Ausblick auf die weitere Entwicklung des Produkts}{7}
+\contentsline {section}{Literaturverzeichnis}{8}
