@@ -1,2 +1,6 @@
 % Vierte Seite = Hier geht's eigentlich richtig los
 \section{Einleitung}
+C\# Essentials ist eine Erweiterung für Microsoft Visual Studio 2015. Die Erweiterung zeigt dem Programmierer auf Grundlage der .NET Compiler Plattform „Roslyn“ Code-Fixes und Refactoring-Methoden.
+Dadurch ist es dem Benutzer einfacher neue C\# 6 Sprachfeatures zu nutzen und korrekt umzusetzen.\\
+Im Rahmen der Veranstaltung \glqq Testen, Verifizieren Analysieren von Software\grqq{} haben wir die Visual Studio Erweiterung C\# Essentials auf Fehler überprüft. Dazu haben wir versucht eine möglichst Hohe Testabdeckung in verschiedenen Ebenen zu erreichen. Außerdem haben wir die Software statisch auf Fehler analysiert.\\
+Beim Einrichten der Entwicklungsumgebung für C\# Essentials ist uns ein erster Defizit aufgefallen. Bei einer Konfiguration wurde von uns ein Mac in Kombination mit einer virtuellen Maschine mit Windows verwendet. Dadurch wurde bei allen Zeilenumbrüchen (Line Endings) der Mac OS Standard Zeilenvorschub (line feed) benutzt. Bei den bereits vorhandenen Tests von C\# Essentials wird mit ganzen Code Schnipseln getestet. Daher schlugen alle Tests die Code Schnipsel über mehrere Zeilen verwendeten fehl, da der andere Zeilenumbruch bei der Überprüfung zu einem Fehler führte.
