@@ -32,3 +32,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyFileVersion("1.0.0.0")]
 
 [assembly: InternalsVisibleTo("CSharpEssentials.Tests")]
+[assembly: InternalsVisibleTo("CSharpEssentials.Explorables")]
+[assembly: InternalsVisibleTo("CSharpEssentials.IntelliTests")]
+
