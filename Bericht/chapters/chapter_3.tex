@@ -1,2 +1,7 @@
 %
 \section{Statische Analyse}
+
+\subsection{Gendarme}
+Gendarme analysiert Programme und Bibliotheken, welche in den verschiedenen .NET Sprachen geschrieben wurden. Dafür benötigt Gendarme eine kompilierte Assembly, weil es nicht den C\# statisch analysiert, sondern ein daraus erzeugte Spracheformat: Das ECMA CIL.~\cite{ecma} Die CIL wird mit Hilfe von der Bibliothek Cecil analysiert. Gendarme generiert auf Basis dieser Analyse Berichte. Die Berichte 
+
+\paragraph{ECMA CIL}
