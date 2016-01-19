@@ -237,3 +237,5 @@ $RECYCLE.BIN/
 *.synctex.gz
 *.log
 *.DS_Store
+*.bbl
+*.toc
