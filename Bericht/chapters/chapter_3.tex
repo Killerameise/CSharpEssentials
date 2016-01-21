@@ -10,7 +10,7 @@ NDepend ermittelt in CSharpEssentials insgesamt 37 verletzte Regeln, dabei finde
 
 \paragraph{Methods too complex}
 
-\paragraph{Potentially dead Methods} In CSharpEssentials findet NDepend sechs mögliche Stellen, an denen Quelltext nicht ausgeführt wird. In Abbildung~\ref{fig:dead-methods} sieht man zwei der gefundenen Stellen. Bei allen handelt es sich um nicht aufgerufenen Konstruktoren. 
+\paragraph{Potentially dead Methods} In CSharpEssentials findet NDepend sechs mögliche Stellen, an denen Quelltext nicht ausgeführt wird. In Abbildung~\ref{fig:dead-methods} sieht man zwei der gefundenen Stellen. Ndepend findet nicht aufgerufenen Konstruktoren. Jedoch handelt es sich bei den gefundenen Stellen um keine Konstruktoren. Ähnlich der \code{MoveNext} Methode diagnostiziert eine falsche Methode an der richtigen Stelle. %TODO: versuche rauszufinden, welche Ursache hier vorliegt.
 
 \begin{figure}[ht]
 \centering
@@ -22,8 +22,31 @@ Von NDepend gefundener wahrscheinlich nicht aufgerufener Quelltext
 \end{figure}
 
 \subsubsection{Quelltextmetriken}
-Mit Hilfe des Code Metrics View 
+Mit Hilfe des Code Metrics View lassen sich Quelltextmetriken visualisieren. Auflösungen von Assembly über Namespaces bis Methoden stehen zur Auswahl. In größeren System, welche aus mehren Assemblies bestehen, möchte man nach kritischen Teilprogrammen suchen. Mit knapp über 1000 Quelltextzeilen und nur einer Assembly in CSharpEssentials ist die Auflösung nach Methoden am sinnvollsten. IL Nesting Depth, Cyclomatic Complexity und IL Cyclomatic Complexity erzeugen die in den Abbildungen~\ref{fig:nd-il-nesting-depth},~\ref{fig:nd-cyclomatic-complexity} und ~\ref{fig:nd-il-cyclomatic-complexity} dargestellten Code Metric Views.
 
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/nd-il-nesting-depth.png}
+	\caption{}
+	\vspace{0.1cm}
+	\label{fig:nd-il-nesting-depth}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/nd-cyclomatic-complexity.png}
+	\caption{}
+	\vspace{0.1cm}
+	\label{fig:nd-cyclomatic-complexity}
+\end{figure}
+
+\begin{figure}[ht]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/nd-il-cyclomatic-complexity.png}
+	\caption{}
+	\vspace{0.1cm}
+	\label{fig:nd-il-cyclomatic-complexity}
+\end{figure}
 
 \subsection{ReSharper}
 
@@ -43,7 +66,7 @@ Gendarme analysiert Programme und Bibliotheken, welche in den verschiedenen .NET
 
 \subsubsection{Fehler}
 
-\subsubsection{Sicherheit}
+\subsubsection{Sicherheiten}
 
 
 \subsection{SourceMonitor}
