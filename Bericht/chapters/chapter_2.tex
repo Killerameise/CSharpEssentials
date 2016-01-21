@@ -4,12 +4,13 @@
 \definecolor{greencomments}{rgb}{0,0.5,0}
 \definecolor{redstrings}{rgb}{0.9,0,0}
 \definecolor{light-gray}{gray}{0.96}
-
-
+In diesem Kapitel wollen wir die Software C\# Essentials durch effiziente Test auf Fehler prüfen. Bei der Betrachtung des Codes ist uns aufgefallen, das der Entwickler Dustin Campbell Qualitativ hochwertigen Code geschrieben hat und auch eine sehr gute Testabdeckung besteht. Im folgenden möchten wir jedoch nicht nur jede einzelne Methode testen, sondern auch gelernte Inhalte aus der Vorlesung, wie Graph oder Logic Coverage, umsetzen.\\
+Vorab steht für uns fest, dass wir keine Input Coverage gezielt betrachten werden, weil die Methoden alle Codeschnipsel oder Teile von diesen bekommen und wir festgestellt haben, dass der Entwickler für jeden Fall ein Test mit einem Codeschnipsel programmiert hat. Somit hat der Entwickler an dieser Stelle schon gute Arbeit geleistet.\\
+Zudem haben wir keine Möglichkeit Syntax Coverage umzusetzen, da wir in dem Projekt keine strikte Syntax oder Grammatik haben. 
 
 \subsection{Testen der Methode \textit{IsWithinConstructorOf}}
 In C\# 6 können Auto-Properties ohne Setter deklariert werden.\cite{csharp6} C\# Essentials überprüft, ob der Setter weggelassen werden kann und teilt dies gegebenenfalls dem Benutzer mit. Die Methode \textit{IsWithinConstructorOf} überprüft dabei, ob das Setzen des Auto-Properties im Konstruktor stattfindet. Die statische Analyse ergab, dass diese Methode sehr Komplex und damit sehr fehleranfällig ist. Daher haben wir uns entschlossen diese genauer zu testen. Aus dem in Listing \ref{lst:code-IsWithinConstructorOf} gezeigten Code haben wir, den in Abbildung~\ref{fig:graph-constructor} dargestellten, Kontrollflussgraphen erstellt. Anschließend haben wir die in Listing \ref{lst:coverage-IsWithinConstructorOf} zu sehenden Testpfade für unterschiedliche Coverage Kriterien entwickelt.\\
-\begin{figure}
+\begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{images/GraphIsWithinConstructorOf.png}
 	\caption{Graph für die Methode \textit{IsWithinConstructorOf}()}
@@ -32,10 +33,9 @@ Example Test Paths = [1,3,1,3,1,2], [1,3,4], [1,3,5], [1,3,6]
 Prime Path Coverage:
 TR = {[1,3,4], [1,3,5], [1,3,6], [3,1,2], [3,1,3], [1,3,1]}
 Example Test Paths: [1,3,1,3,1,2], [1,3,4], [1,3,4], [1,3,5]
-
 \end{lstlisting}
 \vspace{3ex}
-Zu erkennen ist, dass Edge Pair und Prime Path Coverage die selben Test Paths besitzen. Abschließend haben wir für jeden Test Paths der Prime beziehungsweise Edge Pair Coverage einen Test programmiert. Anhand eines Beispiels sollen die Tests erläutert werden. Die in Listing \ref{lst:code-AutoPropUsedInLambdaInConstructorCannotBeReadonly} gezeigte Testmethode \textit{AutoPropUsedInLambdaInConstructorCannotBeReadonly} deckt den Pfad \texttt{[1,3,5]} ab. In der Testmethode wird die Methode \textit{IsWithinConstructorOf} mit dem im Test definierten Codeschnipsel geprüft. Beim Schleifendurchlauf trifft der Fall \texttt{ParenthesizedLambdaExpression} zu. Die Methode gibt \texttt{false} zurück. Deshalb hat C\# Essentials in diesem Fall keine Verbesserungsvorschläge für den Nutzer und der Test ist erfüllt.
+Zu erkennen ist, dass Edge Pair und Prime Path Coverage die selben Testpfade besitzen. Abschließend haben wir für jeden Testpfad der Prime beziehungsweise Edge Pair Coverage einen Test programmiert. Anhand eines Beispiels sollen die Tests erläutert werden. Die in Listing \ref{lst:code-AutoPropUsedInLambdaInConstructorCannotBeReadonly} gezeigte Testmethode \textit{AutoPropUsedInLambdaInConstructorCannotBeReadonly} deckt den Pfad \texttt{[1,3,5]} ab. In der Testmethode wird die Methode \textit{IsWithinConstructorOf} mit dem im Test definierten Codeschnipsel geprüft. Beim Schleifendurchlauf trifft der Fall \texttt{ParenthesizedLambdaExpression} zu. Die Methode gibt \texttt{false} zurück. Deshalb hat C\# Essentials in diesem Fall keine Verbesserungsvorschläge für den Nutzer und der Test ist erfüllt.
 
 
 \subsection{Testen der Methode \textit{IsValidStringFormatMethod}}
@@ -59,8 +59,14 @@ Example Test Paths = [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
 Prime Path Coverage:
 TR = {[1,2], [1,3,4], [1,3,5,6], [1,3,5,7]}
 Example Test Paths: [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
-
 \end{lstlisting}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/GraphISValidStringFormatMethod.png}
+	\caption{Graph für die Methode \textit{IsValidStringFormatMethod}()}
+	\label{fig:graph-validstring}
+\end{figure}
+Auffallend ist, dass alle Coverage Kriterien die selben Testpfade besitzen. Das kommt Zustande, weil die Methode \textit{IsValidStringFormatMethod} keine Schleifen und Alternativen in den Bedingungen besitzt. Beispielhaft werden die Tests für die Prime Path Coverage an der Implementierung für den Pfad \texttt{[1,3,5,7]} anhand der in Listing \ref{lst:code-ConditionalExpression} abgebildeten Testmethode erläutert. In der Methode werden zwei Codeschnipsel definiert. Der eine wird der Klasse übergeben. Der andere ist das Ergebnis nach der Ausführung. Die Methode \textit{IsValidStringFormatMethod} gibt bei dem Codeschnipsel \texttt{false} zurück, da der String in einen interpolated String umgewandelt werden kann.
 \lstset{language=[Sharp]C,
 	showspaces=false,
 	showtabs=false,
@@ -75,12 +81,7 @@ Example Test Paths: [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
 	tabsize=2,
 	backgroundcolor=\color{light-gray}
 }
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{images/GraphISValidStringFormatMethod.png}
-	\caption{Graph für die Methode \textit{IsValidStringFormatMethod}()}
-	\label{fig:graph-validstring}
-\end{figure}
+
 
 \begin{lstlisting}[caption={Mehtode \textit{IsWithinConstructorOf}},
 label=lst:code-IsWithinConstructorOf]
@@ -151,6 +152,7 @@ public void AutoPropUsedInLambdaInConstructorCannotBeReadonly()
 	NoDiagnostic(code, DiagnosticIds.UseGetterOnlyAutoProperty);
 }
 \end{lstlisting}
+\vspace{4ex}
 \begin{lstlisting}[caption={Mehtode \textit{ConditionalExpression}},
 label=lst:code-ConditionalExpression]
 [Test]
