@@ -1,20 +1,14 @@
 %
 \section{Statische Analyse}
-
-\subsection{Gendarme}
-Gendarme analysiert Programme und Bibliotheken, welche in den verschiedenen .NET Sprachen geschrieben wurden. Dafür benötigt Gendarme eine kompilierte Assembly, weil es nicht den C\# statisch analysiert, sondern ein daraus erzeugte Spracheformat: Das ECMA CIL.~\cite{ecma} Die CIL wird mit Hilfe von der Bibliothek Cecil analysiert.~\cite{cecil} Gendarme generiert auf Basis dieser Analyse Berichte. Sie können als HTML-Datei exportiert werden.
-
-\paragraph{ECMA CIL}
-
-\subsubsection{Fehler}
-
-\subsubsection{Sicherheit}
-
+Zur statischen Analyse von C\# Programmen stehen eine Reihen an Werkzeugen zur Verfügung. Einerseits gibt es in die Entwicklungsumgebung integrierte Werkzeuge wie NDepend, ReSharper und das von Visual Studio selbst bereitgestellte Tool.
 
 \subsection{NDepend}
 NDepend führt statischen Analysen von Projekten durch, erstellt dabei Softwarelandkarten, Codemetriken und überprüft ob Quelltextregel eingehalten werden.~\cite{ndepend} Auf der Dashboard genannten Übersicht erstellt NDepend eine Zusammenfassung aller Analysen.
 
 \subsubsection{Quelltextregel}
+NDepend ermittelt in CSharpEssentials insgesamt 37 verletzte Regeln, dabei finden 150 Regeln Anwendung. An dieser Stelle soll nur auf die als kritisch markierten Regeln eingegangen werden. 3 kritische Regelverletzungen ermittelt NDepend: Methods too complex (2), Potenially dead Methods (6), Potentially dead Types (6). Weitere verletzte Regeln sind in erster Linie nicht eingehaltene Namenskonventionen, Sichtbarkeiten und Design Schwächen. Kritische Stellen werden im folgenden genauer analysiert, um potentielle Fehler zu finden.
+
+\paragraph{Methods too complex}
 
 \paragraph{Potentially dead Methods} In CSharpEssentials findet NDepend sechs mögliche Stellen, an denen Quelltext nicht ausgeführt wird. In Abbildung~\ref{fig:dead-methods} sieht man zwei der gefundenen Stellen. Bei allen handelt es sich um nicht aufgerufenen Konstruktoren. 
 
@@ -27,12 +21,29 @@ Von NDepend gefundener wahrscheinlich nicht aufgerufener Quelltext
 \label{fig:dead-methods}
 \end{figure}
 
+\subsubsection{Quelltextmetriken}
+Mit Hilfe des Code Metrics View 
+
+
+\subsection{ReSharper}
+
+
 \subsection{Visual Studio Tools}
 Visual Studio analysiert Code, erstellt dabei Quelltextmetriken und kann zum Beispiel Code-Clone identifizieren.
 
 \subsubsection{Quelltextmetriken}
 
 \subsubsection{Code-Clone}
+
+
+\subsection{Gendarme}
+Gendarme analysiert Programme und Bibliotheken, welche in den verschiedenen .NET Sprachen geschrieben wurden. Dafür benötigt Gendarme eine kompilierte Assembly, weil es nicht den C\# statisch analysiert, sondern ein daraus erzeugte Spracheformat: Das ECMA CIL.~\cite{ecma} Die CIL wird mit Hilfe von der Bibliothek Cecil analysiert.~\cite{cecil} Gendarme generiert auf Basis dieser Analyse Berichte. Sie können als HTML-Datei exportiert werden.
+
+\paragraph{ECMA CIL}
+
+\subsubsection{Fehler}
+
+\subsubsection{Sicherheit}
 
 
 \subsection{SourceMonitor}
