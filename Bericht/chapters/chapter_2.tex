@@ -1,16 +1,22 @@
 %
 \section{Testen}
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+\definecolor{light-gray}{gray}{0.96}
+
+
 
 \subsection{Testen der Methode \textit{IsWithinConstructorOf}}
-In C\# 6 können Auto-Properties ohne Setter deklariert werden.\cite{csharp6} C\# Essentials überprüft, ob der Setter weggelassen werden kann und teilt dies gegebenenfalls dem Benutzer mit. Die zu testende Methode \textit{IsWithinConstructorOf} überprüft dabei, ob das Setzen des Auto-Properties im Konstruktor stattfindet. Die statische Analyse ergab, dass diese Methode sehr Komplex und damit sehr fehleranfällig ist. Daher haben wir uns entschlossen diese genauer zu testen. Dazu haben wir, den in Abbildung~\ref{fig:graph-constructor} dargestellten, Kontrollflussgraphen erstellt. Anschließend haben wir folgende Testpfade für unterschiedliche Coverage Kriterien entwickelt.\\
+In C\# 6 können Auto-Properties ohne Setter deklariert werden.\cite{csharp6} C\# Essentials überprüft, ob der Setter weggelassen werden kann und teilt dies gegebenenfalls dem Benutzer mit. Die Methode \textit{IsWithinConstructorOf} überprüft dabei, ob das Setzen des Auto-Properties im Konstruktor stattfindet. Die statische Analyse ergab, dass diese Methode sehr Komplex und damit sehr fehleranfällig ist. Daher haben wir uns entschlossen diese genauer zu testen. Aus dem in Listing \ref{lst:code-IsWithinConstructorOf} gezeigten Code haben wir, den in Abbildung~\ref{fig:graph-constructor} dargestellten, Kontrollflussgraphen erstellt. Anschließend haben wir die in Listing \ref{lst:coverage-IsWithinConstructorOf} zu sehenden Testpfade für unterschiedliche Coverage Kriterien entwickelt.\\
 \begin{figure}
 	\centering
 	\includegraphics[width=\textwidth]{images/GraphIsWithinConstructorOf.png}
 	\caption{Graph für die Methode \textit{IsWithinConstructorOf}()}
 	\label{fig:graph-constructor}
 \end{figure}
-\lstset{caption={Coverage für die Mehtode \textit{IsWithinConstructorOf}}}
-\begin{lstlisting}
+\begin{lstlisting}[caption={Coverage für die Mehtode \textit{IsWithinConstructorOf}},
+label=lst:coverage-IsWithinConstructorOf]
 Node Coverage:
 TR = {1,2,3,4,5,6}
 Example Test Paths = [1,3,4], [1,3,5], [1,3,6]
@@ -29,14 +35,15 @@ Example Test Paths: [1,3,1,3,1,2], [1,3,4], [1,3,4], [1,3,5]
 
 \end{lstlisting}
 \vspace{3ex}
-Zu erkennen ist, dass Edge Pair und Prime Path Coverage die selben Test Paths besitzen. Abschließend haben wir für die Methode \textit{IsWithinConstructorOf} jeweils einen Test programmiert, der einen der Testpfade der Prime beziehungsweise Edge Pair Coverage abdeckt.
+Zu erkennen ist, dass Edge Pair und Prime Path Coverage die selben Test Paths besitzen. Abschließend haben wir für jeden Test Paths der Prime beziehungsweise Edge Pair Coverage einen Test programmiert. Anhand eines Beispiels sollen die Tests erläutert werden. Die in Listing \ref{lst:code-AutoPropUsedInLambdaInConstructorCannotBeReadonly} gezeigte Testmethode \textit{AutoPropUsedInLambdaInConstructorCannotBeReadonly} deckt den Pfad \texttt{[1,3,5]} ab. In der Testmethode wird die Methode \textit{IsWithinConstructorOf} mit dem im Test definierten Codeschnipsel geprüft. Beim Schleifendurchlauf trifft der Fall \texttt{ParenthesizedLambdaExpression} zu. Die Methode gibt \texttt{false} zurück. Deshalb hat C\# Essentials in diesem Fall keine Verbesserungsvorschläge für den Nutzer und der Test ist erfüllt.
 
 
 \subsection{Testen der Methode \textit{IsValidStringFormatMethod}}
 C\# 6 unterstützt interpolated Strings. Anstatt in der \textit{String.Format} Methode Platzhalter zu verwenden, um Variablen einzufügen, können diese nun direkt im String verwendet werden.\cite{csharp6} C\# Essentials gibt dem Benutzer Vorschläge, wie er die neuen interpolated Strings verwendet. Die Methode \textit{String.Format} überprüft in diesem Zusammenhang, wann es sich um ein valide \textit{String.Format} Methode handelt.\\
-Auch beim Testen dieser Methode haben wir zu erst den Kontrollflussgraphen, wie in Abbildung \ref{fig:graph-validstring} zu sehen, erzeugt. Anschließend haben wir die folgenden Coverage Kriterien aufgestellt.
-\lstset{caption={Coverage für die Mehtode \textit{IsValidStringFormatMethod}}}
-\begin{lstlisting}
+Auch beim Testen dieser Methode haben wir zu erst den Kontrollflussgraphen, wie in Abbildung \ref{fig:graph-validstring} zu sehen, erzeugt. Anschließend haben wir die in Listing \ref{lst:coverage-IsValidStringFormatMethod} dargestellten Coverage Kriterien aufgestellt.
+
+\begin{lstlisting}[caption={Coverage für die Mehtode \textit{IsValidStringFormatMethod}},
+label=lst:coverage-IsValidStringFormatMethod]
 Node Coverage:
 TR = {1,2,3,4,5,6,7}
 Example Test Paths = [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
@@ -54,17 +61,6 @@ TR = {[1,2], [1,3,4], [1,3,5,6], [1,3,5,7]}
 Example Test Paths: [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
 
 \end{lstlisting}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{images/GraphISValidStringFormatMethod.png}
-	\caption{Graph für die Methode \textit{IsValidStringFormatMethod}()}
-	\label{fig:graph-validstring}
-\end{figure}
-\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
-\definecolor{greencomments}{rgb}{0,0.5,0}
-\definecolor{redstrings}{rgb}{0.9,0,0}
-\definecolor{light-gray}{gray}{0.96}
 \lstset{language=[Sharp]C,
 	showspaces=false,
 	showtabs=false,
@@ -77,10 +73,17 @@ Example Test Paths: [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
 	stringstyle=\color{redstrings},
 	basicstyle=\ttfamily,
 	tabsize=2,
-	 backgroundcolor=\color{light-gray},
-	caption={Mehtode \textit{IsWithinConstructorOf}}
+	backgroundcolor=\color{light-gray}
 }
-\begin{lstlisting}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.8\textwidth]{images/GraphISValidStringFormatMethod.png}
+	\caption{Graph für die Methode \textit{IsValidStringFormatMethod}()}
+	\label{fig:graph-validstring}
+\end{figure}
+
+\begin{lstlisting}[caption={Mehtode \textit{IsWithinConstructorOf}},
+label=lst:code-IsWithinConstructorOf]
 private static bool IsWithinConstructorOf(SyntaxNode node, INamedTypeSymbol type, bool identifierIsStatic, SemanticModel semanticModel, CancellationToken cancellationToken)
 {
 	// Are we in a constructor?
@@ -107,23 +110,9 @@ private static bool IsWithinConstructorOf(SyntaxNode node, INamedTypeSymbol type
 	return false;
 }
 \end{lstlisting}
-\lstset{language=[Sharp]C,
-	showspaces=false,
-	showtabs=false,
-	breaklines=true,
-	showstringspaces=false,
-	breakatwhitespace=true,
-	escapeinside={(*@}{@*)},
-	commentstyle=\color{greencomments},
-	keywordstyle=\color{bluekeywords},
-	stringstyle=\color{redstrings},
-	basicstyle=\ttfamily,
-	tabsize=2,
-	backgroundcolor=\color{light-gray},
-	caption={Mehtode \textit{IsValidStringFormatMethod}}
-}
-\begin{lstlisting}
 
+\begin{lstlisting}[caption={Mehtode \textit{IsValidStringFormatMethod}},
+label=lst:code-IsValidStringFormatMethod]
 private static bool IsValidStringFormatMethod(ISymbol symbol)
 {
 	if (symbol.Kind != SymbolKind.Method || !symbol.IsStatic)
@@ -141,5 +130,50 @@ private static bool IsValidStringFormatMethod(ISymbol symbol)
 		return true;
 	}
 	return false;
+}
+\end{lstlisting}
+
+\begin{lstlisting}[caption={Mehtode \textit{AutoPropUsedInLambdaInConstructorCannotBeReadonly}},
+label=lst:code-AutoPropUsedInLambdaInConstructorCannotBeReadonly]
+[Test]
+public void AutoPropUsedInLambdaInConstructorCannotBeReadonly()
+{
+	const string code = @"
+	class C
+	{
+		public int P { get; private set; }
+
+		public C()
+		{
+			var f = new Action(() => P = 2);
+		}
+	}";
+	NoDiagnostic(code, DiagnosticIds.UseGetterOnlyAutoProperty);
+}
+\end{lstlisting}
+\begin{lstlisting}[caption={Mehtode \textit{ConditionalExpression}},
+label=lst:code-ConditionalExpression]
+[Test]
+public void ConditionalExpression()
+{
+	const string markupCode = @"
+	class C
+	{
+		void M()
+		{
+			var s = [|string.Format(""{0}"", 42 == 42 ? true : false)|];
+		}
+	}";
+	
+	const string expected = @"
+	class C
+	{
+		void M()
+		{
+			var s = $""{(42 == 42 ? true : false)}"";
+		}
+	}";
+
+	TestCodeRefactoring(markupCode, expected);
 }
 \end{lstlisting}
