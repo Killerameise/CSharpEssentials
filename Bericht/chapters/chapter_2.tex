@@ -18,16 +18,16 @@
 	tabsize=2,
 	backgroundcolor=\color{light-gray}
 }
-In diesem Kapitel wollen wir die Software C\# Essentials durch effiziente Test auf Fehler prüfen. Bei der Betrachtung des Codes ist uns aufgefallen, das der Entwickler Dustin Campbell Qualitativ hochwertigen Code geschrieben hat und auch eine sehr gute Testabdeckung besteht. Im folgenden möchten wir jedoch nicht nur jede einzelne Methode testen, sondern auch gelernte Inhalte aus der Vorlesung, wie Graph oder Logic Coverage, umsetzen.\\
+In diesem Kapitel wollen wir die Software C\# Essentials durch effiziente Test auf Fehler prüfen. Bei der Betrachtung des Codes ist uns aufgefallen, das der Entwickler Dustin Campbell Qualitativ hochwertigen Code geschrieben hat und auch eine sehr gute Testabdeckung besteht. Im folgenden möchten wir jedoch nicht nur jede einzelne Methode testen, sondern auch gelernte Inhalte aus der Vorlesung, wie Graph Coverage, umsetzen.\\
 Vorab steht für uns fest, dass wir keine Input Coverage gezielt betrachten werden, weil die Methoden alle Codeschnipsel oder Teile von diesen bekommen und wir festgestellt haben, dass der Entwickler für jeden Fall ein Test mit einem Codeschnipsel programmiert hat. Somit hat der Entwickler an dieser Stelle schon gute Arbeit geleistet.\\
-Zudem haben wir keine Möglichkeit Syntax Coverage umzusetzen, da wir in dem Projekt keine strikte Syntax oder Grammatik haben. 
+Zudem haben wir keine Möglichkeit Syntax Coverage umzusetzen, da wir in dem Projekt keine strikte Syntax oder Grammatik haben.
 
 \subsection{Testen der Methode \textit{IsWithinConstructorOf}}
 In C\# 6 können Auto-Properties ohne Setter deklariert werden.\cite{csharp6} C\# Essentials überprüft, ob der Setter weggelassen werden kann und teilt dies gegebenenfalls dem Benutzer mit. Die Methode \textit{IsWithinConstructorOf} überprüft dabei, ob das Setzen des Auto-Properties im Konstruktor stattfindet. Die statische Analyse ergab, dass diese Methode sehr Komplex und damit sehr fehleranfällig ist. Daher haben wir uns entschlossen diese genauer zu testen. Aus dem in Listing \ref{lst:code-IsWithinConstructorOf} gezeigten Code haben wir, den in Abbildung~\ref{fig:graph-constructor} dargestellten, Kontrollflussgraphen erstellt. Anschließend haben wir die in Listing \ref{lst:coverage-IsWithinConstructorOf} zu sehenden Testpfade für unterschiedliche Coverage Kriterien entwickelt.\\
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{images/GraphIsWithinConstructorOf.png}
-	\caption{Graph für die Methode \textit{IsWithinConstructorOf}()}
+	\caption{Graph für die Methode \textit{IsWithinConstructorOf}}
 	\label{fig:graph-constructor}
 \end{figure}
 \begin{lstlisting}[caption={Coverage für die Mehtode \textit{IsWithinConstructorOf}},
@@ -96,10 +96,80 @@ var f = new Action(() => P = 2);
 NoDiagnostic(code, DiagnosticIds.UseGetterOnlyAutoProperty);
 }
 \end{lstlisting}
+\subsection{Testen der Methode \textit{UpdatingExpression}}
+Die statische ergab auch bei der Methode \textit{UpdatingExpression} eine hohe Komplexität. Daher wollen wir auch auf diese genauer eingehen. Die Methode sucht genau wie \textit{IsWithinConstructorOf}, ob ein Setter einer Auto-Property existiert. Allerdings sucht sie außerhalb des Konstruktors. Anhand des Codes er Methode aus Listing \ref{lst:code-UpdatingExpression} haben wir den Kontrollflussgraphen in Abbildung \ref{fig:graph-UpdatingExpression} erstellt und dann die Coverage Kriterien in Listing \ref{lst:coverage-UpdatingExpression} aufgestellt.
+\begin{lstlisting}[caption={Coverage für die Mehtode \textit{UpdatingExpression}},
+label=lst:coverage-UpdatingExpression]
+Node Coverage:
+TR = {1,2,3,4,5,6,7,8,9}
+Example Test Paths = [1,2,3,4], [1,2,3,5], [1,2,3,6], [1,2,3,7], [1,2,8]
 
+Edge Coverage:
+TR = {(1,2), (2,3), (2,8), (3,2), (3,4), (3,5), (3,6), (3,7)}
+Example Test Paths = [1,2,3,4], [1,2,3,5], [1,2,3,6], [1,2,3,7], [1,2,3,2,8]
+
+Edge Pair Coverage:
+TR = {[1,2,3], [1,2,8], [2,3,2], [2,3,4], [2,3,5], [2,3,6], [2,3,7], [3,2,3], [3,2,8]}
+Example Test Paths = [1,2,3,2,3,4], [1,2,3,5], [1,2,3,6], [1,2,3,7], [1,2,8]
+
+Prime Path Coverage:
+TR = {[1,2,3,4], [1,2,3,5], [1,2,3,6], [1,2,3,7], [1,2,8], [3,2,8], [3,2,3], [2,3,2]}
+Example Test Paths: [1,2,3,2,3,2,8], [1,2,3,4], [1,2,3,5], [1,2,3,6], [1,2,3,7], [1,2,8]
+\end{lstlisting}
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=\textwidth]{images/GraphUpdatingExpression.png}
+	\caption{Graph für die Methode \textit{UpdatingExpression}}
+	\label{fig:graph-UpdatingExpression}
+\end{figure}
+Als nächstes haben wir für jeden Testpfad der Prime Coverage einen Test programmiert. Auf Grund der Ähnlichkeit der Methoden \textit{UpdatingExpression} und \textit{IsWithinConstructorOf} und ihrer Testmethoden verzichten wir an dieser Stelle auf eine genaue beispielhafte Erläuterung eines Tests.\newpage
+\begin{lstlisting}[caption={Mehtode \textit{UpdatingExpression}},
+label=lst:code-UpdatingExpression]
+private static SyntaxNode UpdatingExpression(SyntaxNode node)
+{
+	var identifier = node;
+ 	for (node = node.Parent; node != null; node = node.Parent)
+ 	{
+ 		switch (node.Kind())
+ 		{
+ 			// Simple or compound assignment
+ 			case SyntaxKind.SimpleAssignmentExpression:
+ 			case SyntaxKind.OrAssignmentExpression:
+ 			case SyntaxKind.AndAssignmentExpression:
+ 			case SyntaxKind.ExclusiveOrAssignmentExpression:
+ 			case SyntaxKind.AddAssignmentExpression:
+ 			case SyntaxKind.SubtractAssignmentExpression:
+ 			case SyntaxKind.MultiplyAssignmentExpression:
+ 			case SyntaxKind.DivideAssignmentExpression:
+ 			case SyntaxKind.ModuloAssignmentExpression:
+ 			case SyntaxKind.LeftShiftAssignmentExpression:
+ 			case SyntaxKind.RightShiftAssignmentExpression:
+ 			var assignment = (AssignmentExpressionSyntax)node;
+ 			return assignment.Left;
+ 			
+ 			// Prefix unary expression
+ 			case SyntaxKind.PreIncrementExpression:
+ 			case SyntaxKind.PreDecrementExpression:
+ 			return ((PrefixUnaryExpressionSyntax)node).Operand;
+ 			
+ 			// Postfix unary expression
+ 			case SyntaxKind.PostIncrementExpression:
+ 			case SyntaxKind.PostDecrementExpression:
+ 			return ((PostfixUnaryExpressionSyntax)node).Operand;
+ 			
+ 			// Early loop termination
+ 			case SyntaxKind.Block:
+ 			case SyntaxKind.ExpressionStatement:
+ 			return null;
+ 		}
+ 	}
+ 	
+	return null;
+}
+\end{lstlisting}
 \subsection{Testen der Methode \textit{IsValidStringFormatMethod}}
 C\# 6 unterstützt interpolated Strings. Anstatt in der \textit{String.Format} Methode Platzhalter zu verwenden, um Variablen einzufügen, können diese nun direkt im String verwendet werden.\cite{csharp6} C\# Essentials gibt dem Benutzer Vorschläge, wie er die neuen interpolated Strings verwendet. Die Methode \textit{String.Format} überprüft in diesem Zusammenhang, wann es sich um ein valide \textit{String.Format} Methode handelt.\\
-Auch beim Testen dieser Methode haben wir zu erst den Kontrollflussgraphen, wie in Abbildung \ref{fig:graph-validstring} zu sehen, erzeugt. Anschließend haben wir die in Listing \ref{lst:coverage-IsValidStringFormatMethod} dargestellten Coverage Kriterien aufgestellt.
+Auch beim Testen dieser Methode haben wir zu erst den Kontrollflussgraphen, wie in Abbildung \ref{fig:graph-validstring} zu sehen, aus dem in Listing \ref{lst:code-IsValidStringFormatMethod} abgebildeten Code erzeugt. Anschließend haben wir die in Listing \ref{lst:coverage-IsValidStringFormatMethod} dargestellten Coverage Kriterien aufgestellt.
 
 \begin{lstlisting}[caption={Coverage für die Mehtode \textit{IsValidStringFormatMethod}},
 label=lst:coverage-IsValidStringFormatMethod]
@@ -110,7 +180,6 @@ Example Test Paths = [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
 Edge Coverage:
 TR = {(1,2), (1,3), (3,4), (3,5), (5,6), (5,7)}
 Example Test Paths = [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
-
 Edge Pair Coverage:
 TR = {[1,2], [1,3,4], [1,3,5], [3,5,6], [3,5,7]}
 Example Test Paths = [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
@@ -122,13 +191,13 @@ Example Test Paths: [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{images/GraphISValidStringFormatMethod.png}
-	\caption{Graph für die Methode \textit{IsValidStringFormatMethod}()}
+	\caption{Graph für die Methode \textit{IsValidStringFormatMethod}}
 	\label{fig:graph-validstring}
 \end{figure}
 Auffallend ist, dass alle Coverage Kriterien die selben Testpfade besitzen. Das kommt Zustande, weil die Methode \textit{IsValidStringFormatMethod} keine Schleifen und Alternativen in den Bedingungen besitzt. Beispielhaft werden die Tests für die Prime Path Coverage an der Implementierung für den Pfad \texttt{[1,3,5,7]} anhand der in Listing \ref{lst:code-ConditionalExpression} abgebildeten Testmethode erläutert. In der Methode werden zwei Codeschnipsel definiert. Der eine wird der Klasse übergeben. Der andere ist das Ergebnis nach der Ausführung. Die Methode \textit{IsValidStringFormatMethod} gibt bei dem Codeschnipsel \texttt{false} zurück, da der String in einen interpolated String umgewandelt werden kann.
 
-
-\begin{lstlisting}[caption={Methode \textit{IsValidStringFormatMethod}},
+\newpage
+\begin{lstlisting}[caption={Mehtode \textit{IsValidStringFormatMethod}},
 label=lst:code-IsValidStringFormatMethod]
 private static bool IsValidStringFormatMethod(ISymbol symbol)
 {
@@ -149,7 +218,6 @@ private static bool IsValidStringFormatMethod(ISymbol symbol)
 	return false;
 }
 \end{lstlisting}
-
 \begin{lstlisting}[caption={Mehtode \textit{ConditionalExpression}},
 label=lst:code-ConditionalExpression]
 [Test]
@@ -163,7 +231,6 @@ public void ConditionalExpression()
 			var s = [|string.Format(""{0}"", 42 == 42 ? true : false)|];
 		}
 	}";
-	
 	const string expected = @"
 	class C
 	{
@@ -176,3 +243,8 @@ public void ConditionalExpression()
 	TestCodeRefactoring(markupCode, expected);
 }
 \end{lstlisting}
+
+
+\subsection{Fazit}
+Das Testen der Methoden des Projekts hat uns gezeigt, dass gutes Testen einiges an Aufwand bedeutet, da es bei komplexen Methoden schwierig sein kann den Kontrollflussgraphen und die zugehörigen Coverage Kriterien aufzustellen. Wir hoffen, dass anhand unsere beispielhaft für einige Methoden geschilderten Vorgehensweise, deutlich geworden wie wir versucht haben Fehler im Projekt zu finden. Die entwickelten und schon vorhandenen Tests haben wir durch bilden von Mutation am ursprünglichen Code selbst getestet. Dabei haben wir einige Zeilen der ursprünglichen Methoden verändert und die Tests auf ihnen laufen lassen. Es hat uns gefreut sehen zu können, dass alle Mutation von den Tests erkannt und gekillt wurden.\\
+
