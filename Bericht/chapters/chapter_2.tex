@@ -128,7 +128,7 @@ Example Test Paths: [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
 Auffallend ist, dass alle Coverage Kriterien die selben Testpfade besitzen. Das kommt Zustande, weil die Methode \textit{IsValidStringFormatMethod} keine Schleifen und Alternativen in den Bedingungen besitzt. Beispielhaft werden die Tests für die Prime Path Coverage an der Implementierung für den Pfad \texttt{[1,3,5,7]} anhand der in Listing \ref{lst:code-ConditionalExpression} abgebildeten Testmethode erläutert. In der Methode werden zwei Codeschnipsel definiert. Der eine wird der Klasse übergeben. Der andere ist das Ergebnis nach der Ausführung. Die Methode \textit{IsValidStringFormatMethod} gibt bei dem Codeschnipsel \texttt{false} zurück, da der String in einen interpolated String umgewandelt werden kann.
 
 
-\begin{lstlisting}[caption={Mehtode \textit{IsValidStringFormatMethod}},
+\begin{lstlisting}[caption={Methode \textit{IsValidStringFormatMethod}},
 label=lst:code-IsValidStringFormatMethod]
 private static bool IsValidStringFormatMethod(ISymbol symbol)
 {
