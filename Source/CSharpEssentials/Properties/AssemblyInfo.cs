@@ -34,4 +34,5 @@ using System.Runtime.InteropServices;
 [assembly: InternalsVisibleTo("CSharpEssentials.Tests")]
 [assembly: InternalsVisibleTo("CSharpEssentials.Explorables")]
 [assembly: InternalsVisibleTo("CSharpEssentials.IntelliTests")]
+[assembly: InternalsVisibleTo("CSharpEssentials.Tests1")]
 

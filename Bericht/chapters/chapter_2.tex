@@ -18,19 +18,19 @@
 	tabsize=2,
 	backgroundcolor=\color{light-gray}
 }
-In diesem Kapitel wollen wir die Software C\# Essentials durch effiziente Test auf Fehler prüfen. Bei der Betrachtung des Codes ist uns aufgefallen, das der Entwickler Dustin Campbell Qualitativ hochwertigen Code geschrieben hat und auch eine sehr gute Testabdeckung besteht. Im folgenden möchten wir jedoch nicht nur jede einzelne Methode testen, sondern auch gelernte Inhalte aus der Vorlesung, wie Graph Coverage, umsetzen.\\
+In diesem Kapitel wollen wir die Software C\# Essentials durch effiziente Test auf Fehler prüfen. Bei der Betrachtung des Codes ist uns aufgefallen, das der Entwickler Dustin Campbell qualitativ hochwertigen Code geschrieben hat und auch eine sehr gute Testabdeckung besteht. Im folgenden möchten wir jedoch nicht nur jede einzelne Methode testen, sondern auch gelernte Inhalte aus der Vorlesung, wie Graph Coverage, umsetzen.\\
 Vorab steht für uns fest, dass wir keine Input Coverage gezielt betrachten werden, weil die Methoden alle Codeschnipsel oder Teile von diesen bekommen und wir festgestellt haben, dass der Entwickler für jeden Fall ein Test mit einem Codeschnipsel programmiert hat. Somit hat der Entwickler an dieser Stelle schon gute Arbeit geleistet.\\
 Zudem haben wir keine Möglichkeit Syntax Coverage umzusetzen, da wir in dem Projekt keine strikte Syntax oder Grammatik haben.
 
 \subsection{Testen der Methode \texttt{IsWithinConstructorOf}}
-In C\# 6 können Auto-Properties ohne Setter deklariert werden.\cite{csharp6} C\# Essentials überprüft, ob der Setter weggelassen werden kann und teilt dies gegebenenfalls dem Benutzer mit. Die Methode \texttt{IsWithinConstructorOf} überprüft dabei, ob das Setzen des Auto-Properties im Konstruktor stattfindet. Die statische Analyse ergab, dass diese Methode sehr Komplex und damit sehr fehleranfällig ist. Daher haben wir uns entschlossen diese genauer zu testen. Aus dem in Listing \ref{lst:code-IsWithinConstructorOf} gezeigten Code haben wir, den in Abbildung~\ref{fig:graph-constructor} dargestellten, Kontrollflussgraphen erstellt. Anschließend haben wir die in Listing \ref{lst:coverage-IsWithinConstructorOf} zu sehenden Testpfade für unterschiedliche Coverage Kriterien entwickelt.\\
+In C\# 6 können Auto-Properties ohne Setter deklariert werden.\cite{csharp6} C\# Essentials überprüft, ob der Setter weggelassen werden kann und teilt dies gegebenenfalls dem Benutzer mit. Die Methode \texttt{IsWithinConstructorOf} überprüft dabei, ob das Setzen des Auto-Properties im Konstruktor stattfindet. Die statische Analyse ergab, dass diese Methode komplex und damit fehleranfällig ist. Daher haben wir uns entschlossen diese genauer zu testen. Aus dem in Listing \ref{lst:code-IsWithinConstructorOf} gezeigten Code haben wir, den in Abbildung~\ref{fig:graph-constructor} dargestellten, Kontrollflussgraphen erstellt. Anschließend haben wir die in Listing \ref{lst:coverage-IsWithinConstructorOf} zu sehenden Testpfade für unterschiedliche Coverage Kriterien entwickelt.\\
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{images/GraphIsWithinConstructorOf.png}
 	\caption{Graph für die Methode \texttt{IsWithinConstructorOf}}
 	\label{fig:graph-constructor}
 \end{figure}
-\begin{lstlisting}[caption={Coverage für die Mehtode \texttt{IsWithinConstructorOf}},
+\begin{lstlisting}[caption={Coverage für die Methode \texttt{IsWithinConstructorOf}},
 label=lst:coverage-IsWithinConstructorOf]
 Node Coverage:
 TR = {1,2,3,4,5,6}
@@ -97,7 +97,7 @@ NoDiagnostic(code, DiagnosticIds.UseGetterOnlyAutoProperty);
 }
 \end{lstlisting}
 \subsection{Testen der Methode \texttt{UpdatingExpression}}
-Die statische ergab auch bei der Methode \texttt{UpdatingExpression} eine hohe Komplexität. Daher wollen wir auch auf diese genauer eingehen. Die Methode sucht genau wie \texttt{IsWithinConstructorOf}, ob ein Setter einer Auto-Property existiert. Allerdings sucht sie außerhalb des Konstruktors. Anhand des Codes er Methode aus Listing \ref{lst:code-UpdatingExpression} haben wir den Kontrollflussgraphen in Abbildung \ref{fig:graph-UpdatingExpression} erstellt und dann die Coverage Kriterien in Listing \ref{lst:coverage-UpdatingExpression} aufgestellt.
+Die statische ergab auch bei der Methode \texttt{UpdatingExpression} eine hohe Komplexität. Daher wollen wir auch auf diese genauer eingehen. Die Methode sucht genau wie \texttt{IsWithinConstructorOf}, ob ein Setter einer Auto-Property existiert. Allerdings sucht sie außerhalb des Konstruktors. Anhand des Codes der Methode aus Listing \ref{lst:code-UpdatingExpression} haben wir den Kontrollflussgraphen in Abbildung \ref{fig:graph-UpdatingExpression} erstellt und die Coverage Kriterien in Listing \ref{lst:coverage-UpdatingExpression} aufgestellt.
 \begin{lstlisting}[caption={Coverage für die Mehtode \texttt{UpdatingExpression}},
 label=lst:coverage-UpdatingExpression]
 Node Coverage:
@@ -168,7 +168,8 @@ private static SyntaxNode UpdatingExpression(SyntaxNode node)
 }
 \end{lstlisting}
 \subsection{Testen der Methode \texttt{IsValidStringFormatMethod}}
-C\# 6 unterstützt interpolated Strings. Anstatt in der \texttt{String.Format} Methode Platzhalter zu verwenden, um Variablen einzufügen, können diese nun direkt im String verwendet werden.\cite{csharp6} C\# Essentials gibt dem Benutzer Vorschläge, wie er die neuen interpolated Strings verwendet. Die Methode \texttt{String.Format} überprüft in diesem Zusammenhang, wann es sich um ein valide \texttt{String.Format} Methode handelt.\\
+C\# 6 unterstützt interpolated Strings. Anstatt in der \texttt{String.Format} Methode Platzhalter zu verwenden, um Variablen einzufügen, können diese nun direkt im String verwendet werden.\cite{csharp6} C\# Essentials gibt dem Benutzer Vorschläge, wie er die neuen interpolated Strings verwendet. Die Methode \texttt{String.Format} überprüft in diesem Zusammenhang, wann es sich um ein valide \texttt{String.Format} Methode handelt.
+
 Auch beim Testen dieser Methode haben wir zu erst den Kontrollflussgraphen, wie in Abbildung \ref{fig:graph-validstring} zu sehen, aus dem in Listing \ref{lst:code-IsValidStringFormatMethod} abgebildeten Code erzeugt. Anschließend haben wir die in Listing \ref{lst:coverage-IsValidStringFormatMethod} dargestellten Coverage Kriterien aufgestellt.
 
 \begin{lstlisting}[caption={Coverage für die Mehtode \texttt{IsValidStringFormatMethod}},
