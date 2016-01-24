@@ -22,15 +22,15 @@ In diesem Kapitel wollen wir die Software C\# Essentials durch effiziente Test a
 Vorab steht für uns fest, dass wir keine Input Coverage gezielt betrachten werden, weil die Methoden alle Codeschnipsel oder Teile von diesen bekommen und wir festgestellt haben, dass der Entwickler für jeden Fall ein Test mit einem Codeschnipsel programmiert hat. Somit hat der Entwickler an dieser Stelle schon gute Arbeit geleistet.\\
 Zudem haben wir keine Möglichkeit Syntax Coverage umzusetzen, da wir in dem Projekt keine strikte Syntax oder Grammatik haben.
 
-\subsection{Testen der Methode \textit{IsWithinConstructorOf}}
-In C\# 6 können Auto-Properties ohne Setter deklariert werden.\cite{csharp6} C\# Essentials überprüft, ob der Setter weggelassen werden kann und teilt dies gegebenenfalls dem Benutzer mit. Die Methode \textit{IsWithinConstructorOf} überprüft dabei, ob das Setzen des Auto-Properties im Konstruktor stattfindet. Die statische Analyse ergab, dass diese Methode sehr Komplex und damit sehr fehleranfällig ist. Daher haben wir uns entschlossen diese genauer zu testen. Aus dem in Listing \ref{lst:code-IsWithinConstructorOf} gezeigten Code haben wir, den in Abbildung~\ref{fig:graph-constructor} dargestellten, Kontrollflussgraphen erstellt. Anschließend haben wir die in Listing \ref{lst:coverage-IsWithinConstructorOf} zu sehenden Testpfade für unterschiedliche Coverage Kriterien entwickelt.\\
+\subsection{Testen der Methode \texttt{IsWithinConstructorOf}}
+In C\# 6 können Auto-Properties ohne Setter deklariert werden.\cite{csharp6} C\# Essentials überprüft, ob der Setter weggelassen werden kann und teilt dies gegebenenfalls dem Benutzer mit. Die Methode \texttt{IsWithinConstructorOf} überprüft dabei, ob das Setzen des Auto-Properties im Konstruktor stattfindet. Die statische Analyse ergab, dass diese Methode sehr Komplex und damit sehr fehleranfällig ist. Daher haben wir uns entschlossen diese genauer zu testen. Aus dem in Listing \ref{lst:code-IsWithinConstructorOf} gezeigten Code haben wir, den in Abbildung~\ref{fig:graph-constructor} dargestellten, Kontrollflussgraphen erstellt. Anschließend haben wir die in Listing \ref{lst:coverage-IsWithinConstructorOf} zu sehenden Testpfade für unterschiedliche Coverage Kriterien entwickelt.\\
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{images/GraphIsWithinConstructorOf.png}
-	\caption{Graph für die Methode \textit{IsWithinConstructorOf}}
+	\caption{Graph für die Methode \texttt{IsWithinConstructorOf}}
 	\label{fig:graph-constructor}
 \end{figure}
-\begin{lstlisting}[caption={Coverage für die Mehtode \textit{IsWithinConstructorOf}},
+\begin{lstlisting}[caption={Coverage für die Mehtode \texttt{IsWithinConstructorOf}},
 label=lst:coverage-IsWithinConstructorOf]
 Node Coverage:
 TR = {1,2,3,4,5,6}
@@ -49,8 +49,8 @@ TR = {[1,3,4], [1,3,5], [1,3,6], [3,1,2], [3,1,3], [1,3,1]}
 Example Test Paths: [1,3,1,3,1,2], [1,3,4], [1,3,4], [1,3,5]
 \end{lstlisting}
 \vspace{1ex}
-Zu erkennen ist, dass Edge Pair und Prime Path Coverage die selben Testpfade besitzen. Abschließend haben wir für jeden Testpfad der Prime beziehungsweise Edge Pair Coverage einen Test programmiert. Anhand eines Beispiels sollen die Tests erläutert werden. Die in Listing \ref{lst:code-AutoPropUsedInLambdaInConstructorCannotBeReadonly} gezeigte Testmethode \textit{AutoPropUsedInLambdaInConstructorCannotBeReadonly} deckt den Pfad \texttt{[1,3,5]} ab. In der Testmethode wird die Methode \textit{IsWithinConstructorOf} mit dem im Test definierten Codeschnipsel geprüft. Beim Schleifendurchlauf trifft der Fall \texttt{ParenthesizedLambdaExpression} zu. Die Methode gibt \texttt{false} zurück. Deshalb hat C\# Essentials in diesem Fall keine Verbesserungsvorschläge für den Nutzer und der Test ist erfüllt.
-\begin{lstlisting}[caption={Mehtode \textit{IsWithinConstructorOf}},
+Zu erkennen ist, dass Edge Pair und Prime Path Coverage die selben Testpfade besitzen. Abschließend haben wir für jeden Testpfad der Prime beziehungsweise Edge Pair Coverage einen Test programmiert. Anhand eines Beispiels sollen die Tests erläutert werden. Die in Listing \ref{lst:code-AutoPropUsedInLambdaInConstructorCannotBeReadonly} gezeigte Testmethode \texttt{AutoPropUsedInLambdaInConstructorCannotBeReadonly} deckt den Pfad \texttt{[1,3,5]} ab. In der Testmethode wird die Methode \texttt{IsWithinConstructorOf} mit dem im Test definierten Codeschnipsel geprüft. Beim Schleifendurchlauf trifft der Fall \texttt{ParenthesizedLambdaExpression} zu. Die Methode gibt \texttt{false} zurück. Deshalb hat C\# Essentials in diesem Fall keine Verbesserungsvorschläge für den Nutzer und der Test ist erfüllt.
+\begin{lstlisting}[caption={Mehtode \texttt{IsWithinConstructorOf}},
 label=lst:code-IsWithinConstructorOf]
 private static bool IsWithinConstructorOf(SyntaxNode node, INamedTypeSymbol type, bool identifierIsStatic, SemanticModel semanticModel, CancellationToken cancellationToken)
 {
@@ -78,7 +78,7 @@ return false;
 return false;
 }
 \end{lstlisting}
-\begin{lstlisting}[caption={Mehtode \textit{AutoPropUsedInLambdaInConstructorCannotBeReadonly}},
+\begin{lstlisting}[caption={Mehtode \texttt{AutoPropUsedInLambdaInConstructorCannotBeReadonly}},
 label=lst:code-AutoPropUsedInLambdaInConstructorCannotBeReadonly]
 [Test]
 public void AutoPropUsedInLambdaInConstructorCannotBeReadonly()
@@ -96,9 +96,9 @@ var f = new Action(() => P = 2);
 NoDiagnostic(code, DiagnosticIds.UseGetterOnlyAutoProperty);
 }
 \end{lstlisting}
-\subsection{Testen der Methode \textit{UpdatingExpression}}
-Die statische ergab auch bei der Methode \textit{UpdatingExpression} eine hohe Komplexität. Daher wollen wir auch auf diese genauer eingehen. Die Methode sucht genau wie \textit{IsWithinConstructorOf}, ob ein Setter einer Auto-Property existiert. Allerdings sucht sie außerhalb des Konstruktors. Anhand des Codes er Methode aus Listing \ref{lst:code-UpdatingExpression} haben wir den Kontrollflussgraphen in Abbildung \ref{fig:graph-UpdatingExpression} erstellt und dann die Coverage Kriterien in Listing \ref{lst:coverage-UpdatingExpression} aufgestellt.
-\begin{lstlisting}[caption={Coverage für die Mehtode \textit{UpdatingExpression}},
+\subsection{Testen der Methode \texttt{UpdatingExpression}}
+Die statische ergab auch bei der Methode \texttt{UpdatingExpression} eine hohe Komplexität. Daher wollen wir auch auf diese genauer eingehen. Die Methode sucht genau wie \texttt{IsWithinConstructorOf}, ob ein Setter einer Auto-Property existiert. Allerdings sucht sie außerhalb des Konstruktors. Anhand des Codes er Methode aus Listing \ref{lst:code-UpdatingExpression} haben wir den Kontrollflussgraphen in Abbildung \ref{fig:graph-UpdatingExpression} erstellt und dann die Coverage Kriterien in Listing \ref{lst:coverage-UpdatingExpression} aufgestellt.
+\begin{lstlisting}[caption={Coverage für die Mehtode \texttt{UpdatingExpression}},
 label=lst:coverage-UpdatingExpression]
 Node Coverage:
 TR = {1,2,3,4,5,6,7,8,9}
@@ -119,11 +119,11 @@ Example Test Paths: [1,2,3,2,3,2,8], [1,2,3,4], [1,2,3,5], [1,2,3,6], [1,2,3,7],
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=\textwidth]{images/GraphUpdatingExpression.png}
-	\caption{Graph für die Methode \textit{UpdatingExpression}}
+	\caption{Graph für die Methode \texttt{UpdatingExpression}}
 	\label{fig:graph-UpdatingExpression}
 \end{figure}
-Als nächstes haben wir für jeden Testpfad der Prime Coverage einen Test programmiert. Auf Grund der Ähnlichkeit der Methoden \textit{UpdatingExpression} und \textit{IsWithinConstructorOf} und ihrer Testmethoden verzichten wir an dieser Stelle auf eine genaue beispielhafte Erläuterung eines Tests.\newpage
-\begin{lstlisting}[caption={Mehtode \textit{UpdatingExpression}},
+Als nächstes haben wir für jeden Testpfad der Prime Coverage einen Test programmiert. Auf Grund der Ähnlichkeit der Methoden \texttt{UpdatingExpression} und \texttt{IsWithinConstructorOf} und ihrer Testmethoden verzichten wir an dieser Stelle auf eine genaue beispielhafte Erläuterung eines Tests.\newpage
+\begin{lstlisting}[caption={Mehtode \texttt{UpdatingExpression}},
 label=lst:code-UpdatingExpression]
 private static SyntaxNode UpdatingExpression(SyntaxNode node)
 {
@@ -167,11 +167,11 @@ private static SyntaxNode UpdatingExpression(SyntaxNode node)
 	return null;
 }
 \end{lstlisting}
-\subsection{Testen der Methode \textit{IsValidStringFormatMethod}}
-C\# 6 unterstützt interpolated Strings. Anstatt in der \textit{String.Format} Methode Platzhalter zu verwenden, um Variablen einzufügen, können diese nun direkt im String verwendet werden.\cite{csharp6} C\# Essentials gibt dem Benutzer Vorschläge, wie er die neuen interpolated Strings verwendet. Die Methode \textit{String.Format} überprüft in diesem Zusammenhang, wann es sich um ein valide \textit{String.Format} Methode handelt.\\
+\subsection{Testen der Methode \texttt{IsValidStringFormatMethod}}
+C\# 6 unterstützt interpolated Strings. Anstatt in der \texttt{String.Format} Methode Platzhalter zu verwenden, um Variablen einzufügen, können diese nun direkt im String verwendet werden.\cite{csharp6} C\# Essentials gibt dem Benutzer Vorschläge, wie er die neuen interpolated Strings verwendet. Die Methode \texttt{String.Format} überprüft in diesem Zusammenhang, wann es sich um ein valide \texttt{String.Format} Methode handelt.\\
 Auch beim Testen dieser Methode haben wir zu erst den Kontrollflussgraphen, wie in Abbildung \ref{fig:graph-validstring} zu sehen, aus dem in Listing \ref{lst:code-IsValidStringFormatMethod} abgebildeten Code erzeugt. Anschließend haben wir die in Listing \ref{lst:coverage-IsValidStringFormatMethod} dargestellten Coverage Kriterien aufgestellt.
 
-\begin{lstlisting}[caption={Coverage für die Mehtode \textit{IsValidStringFormatMethod}},
+\begin{lstlisting}[caption={Coverage für die Mehtode \texttt{IsValidStringFormatMethod}},
 label=lst:coverage-IsValidStringFormatMethod]
 Node Coverage:
 TR = {1,2,3,4,5,6,7}
@@ -191,13 +191,13 @@ Example Test Paths: [1,2], [1,3,4], [1,3,5,6], [1,3,5,7]
 \begin{figure}[h]
 	\centering
 	\includegraphics[width=0.8\textwidth]{images/GraphISValidStringFormatMethod.png}
-	\caption{Graph für die Methode \textit{IsValidStringFormatMethod}}
+	\caption{Graph für die Methode \texttt{IsValidStringFormatMethod}}
 	\label{fig:graph-validstring}
 \end{figure}
-Auffallend ist, dass alle Coverage Kriterien die selben Testpfade besitzen. Das kommt Zustande, weil die Methode \textit{IsValidStringFormatMethod} keine Schleifen und Alternativen in den Bedingungen besitzt. Beispielhaft werden die Tests für die Prime Path Coverage an der Implementierung für den Pfad \texttt{[1,3,5,7]} anhand der in Listing \ref{lst:code-ConditionalExpression} abgebildeten Testmethode erläutert. In der Methode werden zwei Codeschnipsel definiert. Der eine wird der Klasse übergeben. Der andere ist das Ergebnis nach der Ausführung. Die Methode \textit{IsValidStringFormatMethod} gibt bei dem Codeschnipsel \texttt{false} zurück, da der String in einen interpolated String umgewandelt werden kann.
+Auffallend ist, dass alle Coverage Kriterien die selben Testpfade besitzen. Das kommt Zustande, weil die Methode \texttt{IsValidStringFormatMethod} keine Schleifen und Alternativen in den Bedingungen besitzt. Beispielhaft werden die Tests für die Prime Path Coverage an der Implementierung für den Pfad \texttt{[1,3,5,7]} anhand der in Listing \ref{lst:code-ConditionalExpression} abgebildeten Testmethode erläutert. In der Methode werden zwei Codeschnipsel definiert. Der eine wird der Klasse übergeben. Der andere ist das Ergebnis nach der Ausführung. Die Methode \texttt{IsValidStringFormatMethod} gibt bei dem Codeschnipsel \texttt{false} zurück, da der String in einen interpolated String umgewandelt werden kann.
 
 \newpage
-\begin{lstlisting}[caption={Mehtode \textit{IsValidStringFormatMethod}},
+\begin{lstlisting}[caption={Mehtode \texttt{IsValidStringFormatMethod}},
 label=lst:code-IsValidStringFormatMethod]
 private static bool IsValidStringFormatMethod(ISymbol symbol)
 {
@@ -218,7 +218,7 @@ private static bool IsValidStringFormatMethod(ISymbol symbol)
 	return false;
 }
 \end{lstlisting}
-\begin{lstlisting}[caption={Mehtode \textit{ConditionalExpression}},
+\begin{lstlisting}[caption={Mehtode \texttt{ConditionalExpression}},
 label=lst:code-ConditionalExpression]
 [Test]
 public void ConditionalExpression()

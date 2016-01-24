@@ -61,7 +61,7 @@ NDepend ermittelt in C\# Essentials insgesamt 37 verletzte Regeln, dabei finden 
 \paragraph{Methods too complex}
 Auf diese gefundene Regelverletzung wird nur kurz eingegangen, weil sie auf Quelltextmetriken basiert, die später im Abschnitt~\ref{sec:nd-code-metrics} betrachtet werden.
 
-Das wichtigste Detail, welches bei der Verwendung von \emph{NDepend} auffiel, ist , dass die Klasse \texttt{ConvertToInterpolatedStringRefactoring} die in Abbildung~\ref{fig:nd-methode-too-complex} gezeigte Methode \texttt{MoveNext} gar nicht besitzt. Schaut man sich den Quelltext an, stellt man fest: \emph{NDepend} hat eigentlich die Methode \texttt{ComputeRefactoringsAsync} gefunden.
+Das wichtigste Detail, welches bei der Verwendung von \emph{NDepend} auffiel, ist, dass die Klasse \texttt{ConvertToInterpolatedStringRefactoring} die in Abbildung~\ref{fig:nd-methode-too-complex} gezeigte Methode \texttt{MoveNext} gar nicht besitzt. Schaut man sich den Quelltext an, stellt man fest: \emph{NDepend} hat eigentlich die Methode \texttt{ComputeRefactoringsAsync} gefunden.
 
 Die Ursache für den falsch identifizierten Namen liegt in der Implementierung des \texttt{async} Schlüsselworts in C\#. Als asynchron deklarierte Methoden werden in C\# als Zustandsautomat modelliert.~\cite{csharp-async} Die Methode \texttt{ComputeRefactoringsAsync} ist dabei nur einer von vielen Zuständen innerhalb der Methode \texttt{MoveNext}. Deshalb schafft es \emph{NDepend} nicht sie richtig zu identifizieren. Die als zu komplex identifizierten Methoden werden im Abschnitt Testen genauer analysiert.
 
